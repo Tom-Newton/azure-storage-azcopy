@@ -17,9 +17,9 @@ type GCPURLParts struct {
 	UnparsedParams string
 }
 
-const gcpHostPattern = "^storage\\.cloud\\.google\\.com"
+const gcpHostPattern = "^storage\\.googleapis\\.com"
 const invalidGCPURLErrorMessage = "Invalid GCP URL"
-const gcpEssentialHostPart = "google.com"
+const gcpEssentialHostPart = "googleapis.com"
 
 var gcpHostRegex = regexp.MustCompile(gcpHostPattern)
 

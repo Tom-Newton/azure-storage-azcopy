@@ -29,6 +29,7 @@ import (
 
 	"github.com/minio/minio-go"
 	"github.com/minio/minio-go/pkg/credentials"
+	"google.golang.org/api/option"
 )
 
 // ==============================================================================================
@@ -142,7 +143,7 @@ func (f *S3ClientFactory) GetS3Client(ctx context.Context, credInfo CredentialIn
 // GCP credential factory related methods
 // ====================================================================
 func CreateGCPClient(ctx context.Context) (*gcpUtils.Client, error) {
-	client, err := gcpUtils.NewClient(ctx)
+	client, err := gcpUtils.NewClient(ctx, option.WithoutAuthentication())
 	return client, err
 }
 

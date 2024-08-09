@@ -6,7 +6,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"github.com/Azure/azure-storage-azcopy/v10/common"
-	"golang.org/x/oauth2/google"
+	// "golang.org/x/oauth2/google"
 	"io"
 	"os"
 
@@ -61,31 +61,31 @@ func newGCPSourceInfoProvider(jptm IJobPartTransferMgr) (ISourceInfoProvider, er
 	}
 	glcm := common.GetLifecycleMgr()
 	jsonKey, err = os.ReadFile(glcm.GetEnvironmentVariable(common.EEnvironmentVariable.GoogleAppCredentials()))
-	if err != nil {
-		return nil, fmt.Errorf("Cannot read JSON key file. Please verify you have correctly set GOOGLE_APPLICATION_CREDENTIALS environment variable")
-	}
+	// if err != nil {
+	// 	return nil, fmt.Errorf("Cannot read JSON key file. Please verify you have correctly set GOOGLE_APPLICATION_CREDENTIALS environment variable")
+	// }
 	return &p, nil
 }
 
 func (p *gcpSourceInfoProvider) PreSignedSourceURL() (string, error) {
-	conf, err := google.JWTConfigFromJSON(jsonKey)
-	if err != nil {
-		return "", fmt.Errorf("Could not get config from json key. Error: %v", err)
-	}
-	opts := &gcpUtils.SignedURLOptions{
-		Scheme:         gcpUtils.SigningSchemeV4,
-		Method:         "GET",
-		GoogleAccessID: conf.Email,
-		PrivateKey:     conf.PrivateKey,
-		Expires:        time.Now().Add(defaultPresignExpires),
-	}
-	u, err := gcpUtils.SignedURL(p.gcpURLParts.BucketName, p.gcpURLParts.ObjectKey, opts)
+	// _, err := google.JWTConfigFromJSON(jsonKey)
+	// // if err != nil {
+	// // 	return "", fmt.Errorf("Could not get config from json key. Error: %v", err)
+	// // }
+	// opts := &gcpUtils.SignedURLOptions{
+	// 	Scheme:         gcpUtils.SigningSchemeV4,
+	// 	Method:         "GET",
+	// 	// GoogleAccessID: conf.Email,
+	// 	// PrivateKey:     conf.PrivateKey,
+	// 	Expires:        time.Now().Add(defaultPresignExpires),
+	// }
+	// u, err := gcpUtils.SignedURL(p.gcpURLParts.BucketName, p.gcpURLParts.ObjectKey, opts)
 
-	if err != nil {
-		return "", fmt.Errorf("Unable to Generate Signed URL for given GCP Object: %v", err)
-	}
+	// if err != nil {
+	// 	return "", fmt.Errorf("Unable to Generate Signed URL for given GCP Object: %v", err)
+	// }
 
-	return u, nil
+	return p.gcpURLParts.String(), nil
 }
 
 func (p *gcpSourceInfoProvider) Properties() (*SrcProperties, error) {
